@@ -87,7 +87,7 @@ func aptGetClean(ctx context.Context, simulate bool, interactive bool, quietLeve
 }
 
 func aptGetInstall(ctx context.Context, packages []string, simulate bool, interactive bool, quietLevel int, extraOptions string) error {
-	cmd := AptGet{Args: []string{"install"}}
+	cmd := AptGet{Args: []string{"install", "--no-install-recommends"}}
 	cmd.Args = append(cmd.Args, aptGetArgs(simulate, interactive, quietLevel)...)
 	extraOptionsArr, err := shellquote.Split(extraOptions)
 	if err != nil {
