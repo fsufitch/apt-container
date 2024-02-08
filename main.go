@@ -11,7 +11,7 @@ import (
 )
 
 func withGracefulSigInt(parent context.Context) context.Context {
-	ctx, cancel := context.WithCancelCause(parent)
+	ctx, cancel := context.WithCancel(parent)
 
 	sigIntCh := make(chan os.Signal, 1)
 	signal.Notify(sigIntCh, os.Interrupt)
@@ -19,7 +19,7 @@ func withGracefulSigInt(parent context.Context) context.Context {
 		<-sigIntCh
 		fmt.Fprintln(os.Stderr, "SIGINT received; stopping gracefully")
 		signal.Stop(sigIntCh)
-		cancel(errSigInt)
+		cancel()
 	}()
 
 	return ctx
